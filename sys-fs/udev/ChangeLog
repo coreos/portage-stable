@@ -1,6 +1,97 @@
 # ChangeLog for sys-fs/udev
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/sys-fs/udev/ChangeLog,v 1.918 2013/06/02 13:29:15 jer Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-fs/udev/ChangeLog,v 1.939 2013/07/23 10:57:25 ssuominen Exp $
+
+  23 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-206.ebuild,
+  udev-9999.ebuild:
+  Force at least sys-apps/kmod >= 14-r1 to be OpenRC compatible with the
+  static-nodes init script.
+
+*udev-206 (23 Jul 2013)
+
+  23 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-204.ebuild,
+  +udev-206.ebuild, udev-9999.ebuild:
+  Version bump. Stop defining bash-completion directory and let the build-sys
+  read it from bash-completion.pc pkg-config file.
+
+  17 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-205.ebuild,
+  udev-9999.ebuild:
+  Pull in app-text/docbook-xml-dtd:4.2 for generation of udev(7), udevadm(8)
+  and systemd-udevd(8) manpages. Move libxslt and docbook(s) behind 9999 "if" and
+  "else" block again thanks to upstream shipping manpages in tarballs again wrt
+  http://cgit.freedesktop.org/systemd/systemd/commit/?id=b31c6d8d4f33502d6060e7
+  08f5252ee2ea8648ad
+
+  16 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-9999.ebuild:
+  This commit will require 60-keyboard.hwdb file from sys-apps/hwids. Upstream
+  removed keymaps in favour of hwdb based ones, see
+  http://cgit.freedesktop.org/systemd/systemd/commit/?id=ddc77f62244bb41d5c8261
+  517e2e1ff1b763fc94
+
+  15 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-9999.ebuild:
+  Force dev-util/gperf DEPEND for upstream commit of:
+  http://cgit.freedesktop.org/systemd/systemd/commit/?id=9d7d42bc406a2ac0463967
+  4281ce3ff6beeda790
+  This will revert commit for bug #452760 that made it optional dependency you
+  could avoid by setting USE="-keymap"
+
+  09 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-9999.ebuild:
+  Force at least sys-apps/kmod >= 14 wrt
+  http://cgit.freedesktop.org/systemd/systemd/commit/?id=edeb68c53f1cdc452016b4
+  c8512586a70b1262e3
+
+*udev-205 (04 Jul 2013)
+
+  04 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> +udev-205.ebuild,
+  udev-9999.ebuild:
+  Pass --disable-machined which was split out from --disable-logind. Version
+  bump.
+
+  01 Jul 2013; Samuli Suominen <ssuominen@gentoo.org> udev-9999.ebuild:
+  Improve the postinst message about networking wrt #474864 by "Coacher". Pass
+  --disable-tmpfiles to follow upstream git. Separate building of the udev
+  helpers to avoid more parallel make problems that aren't fixed by upgrading
+  sys-devel/make to 3.82-r4. Remove --bindir=/bin and follow upstream Makefile.am
+  by using "rootbin" instead of "bin" targets. Move away --enable-introspection
+  from it's own 'if' and 'else'.
+
+  30 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for s390, wrt bug #470580
+
+  29 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for ppc64, wrt bug #470580
+
+  29 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for ppc, wrt bug #470580
+
+  29 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for sparc, wrt bug #470580
+
+  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for arm, wrt bug #470580
+
+  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for ia64, wrt bug #470580
+
+  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for alpha, wrt bug #470580
+
+  25 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for x86, wrt bug #470580
+
+  25 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for amd64, wrt bug #470580
+
+  09 Jun 2013; Mike Frysinger <vapier@gentoo.org> metadata.xml:
+  Add upstream CPE tag (security info) from ChromiumOS.
+
+  09 Jun 2013; Agostino Sarubbo <ago@gentoo.org> udev-204.ebuild:
+  Stable for sh, wrt bug #470580
+
+  07 Jun 2013; Samuli Suominen <ssuominen@gentoo.org> udev-9999.ebuild:
+  Revert upstream commit that discontinued support for --enable-static in order
+  to get libudev.a back for USE="static" in sys-fs/cryptsetup and sys-fs/lvm2
+  wrt #472608
 
   02 Jun 2013; Jeroen Roovers <jer@gentoo.org> udev-204.ebuild:
   Stable for HPPA (bug #470580).
