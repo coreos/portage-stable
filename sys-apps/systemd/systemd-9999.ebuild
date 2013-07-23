@@ -1,6 +1,6 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/systemd-9999.ebuild,v 1.61 2013/05/14 14:55:37 floppym Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/systemd-9999.ebuild,v 1.65 2013/07/23 08:25:11 mgorny Exp $
 
 EAPI=5
 
@@ -14,7 +14,8 @@ inherit git-2
 
 AUTOTOOLS_PRUNE_LIBTOOL_FILES=all
 PYTHON_COMPAT=( python2_7 )
-inherit autotools-utils linux-info multilib pam python-single-r1 systemd toolchain-funcs udev user
+inherit autotools-utils bash-completion-r1 fcaps linux-info multilib \
+	pam python-single-r1 systemd toolchain-funcs udev user
 
 DESCRIPTION="System and service manager for Linux"
 HOMEPAGE="http://www.freedesktop.org/wiki/Software/systemd"
@@ -22,10 +23,10 @@ SRC_URI="http://www.freedesktop.org/software/systemd/${P}.tar.xz"
 
 LICENSE="GPL-2 LGPL-2.1 MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
 IUSE="acl audit cryptsetup doc +firmware-loader gcrypt gudev http introspection
-	keymap +kmod lzma openrc pam policykit python qrcode selinux static-libs
-	tcpd test vanilla xattr"
+	+kmod lzma openrc pam policykit python qrcode selinux tcpd test
+	vanilla xattr"
 
 MINKV="2.6.39"
 
@@ -34,7 +35,7 @@ COMMON_DEPEND=">=sys-apps/dbus-1.6.8-r1
 	sys-libs/libcap
 	acl? ( sys-apps/acl )
 	audit? ( >=sys-process/audit-2 )
-	cryptsetup? ( >=sys-fs/cryptsetup-1.4.2 )
+	cryptsetup? ( >=sys-fs/cryptsetup-1.6 )
 	gcrypt? ( >=dev-libs/libgcrypt-1.4.5 )
 	gudev? ( >=dev-libs/glib-2 )
 	http? ( net-libs/libmicrohttpd )
@@ -61,7 +62,7 @@ RDEPEND="${COMMON_DEPEND}
 	!<sys-libs/glibc-2.10
 	!sys-fs/udev"
 
-PDEPEND=">=sys-apps/hwids-20130326.1[udev]"
+PDEPEND=">=sys-apps/hwids-20130717-r1[udev]"
 
 DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
@@ -146,8 +147,8 @@ src_configure() {
 	local myeconfargs=(
 		--localstatedir=/var
 		--with-pamlibdir=$(getpam_mod_dir)
-		# avoid bash-completion dep, default is stupid
-		--with-bashcompletiondir=/usr/share/bash-completion
+		# avoid bash-completion dep
+		--with-bashcompletiondir="$(get_bashcompdir)"
 		# make sure we get /bin:/sbin in $PATH
 		--enable-split-usr
 		# disable sysv compatibility
@@ -165,7 +166,6 @@ src_configure() {
 		$(use_enable gudev)
 		$(use_enable http microhttpd)
 		$(use_enable introspection)
-		$(use_enable keymap)
 		$(use_enable kmod)
 		$(use_enable lzma xz)
 		$(use_enable pam)
@@ -289,6 +289,9 @@ pkg_postinst() {
 	if has_version "sys-apps/hwids[udev]"; then
 		udevadm hwdb --update --root="${ROOT%/}"
 	fi
+
+	# Bug 468876
+	fcaps cap_dac_override,cap_sys_ptrace=ep usr/bin/systemd-detect-virt
 
 	if [[ ! -L "${ROOT}"/etc/mtab ]]; then
 		ewarn "Upstream suggests that the /etc/mtab file should be a symlink to /proc/mounts."

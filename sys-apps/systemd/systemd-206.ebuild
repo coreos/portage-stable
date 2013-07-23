@@ -1,11 +1,13 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/systemd-200-r1.ebuild,v 1.4 2013/04/27 05:38:24 mgorny Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/systemd-206.ebuild,v 1.2 2013/07/23 11:01:58 mgorny Exp $
 
 EAPI=5
 
+AUTOTOOLS_PRUNE_LIBTOOL_FILES=all
 PYTHON_COMPAT=( python2_7 )
-inherit autotools-utils linux-info multilib pam python-single-r1 systemd toolchain-funcs udev user
+inherit autotools-utils bash-completion-r1 fcaps linux-info multilib \
+	pam python-single-r1 systemd toolchain-funcs udev user
 
 DESCRIPTION="System and service manager for Linux"
 HOMEPAGE="http://www.freedesktop.org/wiki/Software/systemd"
@@ -13,10 +15,10 @@ SRC_URI="http://www.freedesktop.org/software/systemd/${P}.tar.xz"
 
 LICENSE="GPL-2 LGPL-2.1 MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
-IUSE="acl audit cryptsetup doc gcrypt gudev http
-	introspection +kmod lzma openrc pam python qrcode selinux static-libs
-	tcpd vanilla xattr"
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
+IUSE="acl audit cryptsetup doc +firmware-loader gcrypt gudev http introspection
+	+kmod lzma openrc pam policykit python qrcode selinux tcpd test
+	vanilla xattr"
 
 MINKV="2.6.39"
 
@@ -25,12 +27,12 @@ COMMON_DEPEND=">=sys-apps/dbus-1.6.8-r1
 	sys-libs/libcap
 	acl? ( sys-apps/acl )
 	audit? ( >=sys-process/audit-2 )
-	cryptsetup? ( >=sys-fs/cryptsetup-1.4.2 )
+	cryptsetup? ( >=sys-fs/cryptsetup-1.6 )
 	gcrypt? ( >=dev-libs/libgcrypt-1.4.5 )
 	gudev? ( >=dev-libs/glib-2 )
 	http? ( net-libs/libmicrohttpd )
 	introspection? ( >=dev-libs/gobject-introspection-1.31.1 )
-	kmod? ( >=sys-apps/kmod-12 )
+	kmod? ( >=sys-apps/kmod-14-r1 )
 	lzma? ( app-arch/xz-utils )
 	pam? ( virtual/pam )
 	python? ( ${PYTHON_DEPS} )
@@ -43,6 +45,7 @@ COMMON_DEPEND=">=sys-apps/dbus-1.6.8-r1
 RDEPEND="${COMMON_DEPEND}
 	>=sys-apps/baselayout-2.2
 	openrc? ( >=sys-fs/udev-init-scripts-25 )
+	policykit? ( sys-auth/polkit )
 	|| (
 		>=sys-apps/util-linux-2.22
 		<sys-apps/sysvinit-2.88-r4
@@ -51,41 +54,85 @@ RDEPEND="${COMMON_DEPEND}
 	!<sys-libs/glibc-2.10
 	!sys-fs/udev"
 
-PDEPEND=">=sys-apps/hwids-20130326.1[udev]"
+PDEPEND=">=sys-apps/hwids-20130717-r1[udev]"
 
-# sys-fs/quota is necessary to store correct paths in unit files
 DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
+	app-text/docbook-xml-dtd:4.2
 	app-text/docbook-xsl-stylesheets
 	dev-libs/libxslt
 	dev-util/gperf
 	>=dev-util/intltool-0.50
-	sys-fs/quota
+	>=sys-devel/gcc-4.6
 	>=sys-kernel/linux-headers-${MINKV}
 	virtual/pkgconfig
 	doc? ( >=dev-util/gtk-doc-1.18 )"
 
+pkg_pretend() {
+	local CONFIG_CHECK="~AUTOFS4_FS ~BLK_DEV_BSG ~CGROUPS ~DEVTMPFS
+		~FANOTIFY ~HOTPLUG ~INOTIFY_USER ~IPV6 ~NET ~PROC_FS ~SIGNALFD
+		~SYSFS ~!IDE ~!SYSFS_DEPRECATED ~!SYSFS_DEPRECATED_V2"
+#		~!FW_LOADER_USER_HELPER"
+
+	# read null-terminated argv[0] from PID 1
+	# and see which path to systemd was used (if any)
+	local init_path
+	IFS= read -r -d '' init_path < /proc/1/cmdline
+	if [[ ${init_path} == */bin/systemd ]]; then
+		eerror "You are using a compatibility symlink to run systemd. The symlink"
+		eerror "has been removed. Please update your bootloader to use:"
+		eerror
+		eerror "	init=/usr/lib/systemd/systemd"
+		eerror
+		eerror "and reboot your system. We are sorry for the inconvenience."
+		if [[ ${MERGE_TYPE} != buildonly ]]; then
+			die "Compatibility symlink used to boot systemd."
+		fi
+	fi
+
+	if [[ ${MERGE_TYPE} != binary ]]; then
+		if [[ $(gcc-major-version) -lt 4
+			|| ( $(gcc-major-version) -eq 4 && $(gcc-minor-version) -lt 6 ) ]]
+		then
+			eerror "systemd requires at least gcc 4.6 to build. Please switch the active"
+			eerror "gcc version using gcc-config."
+			die "systemd requires at least gcc 4.6"
+		fi
+	fi
+
+	if [[ ${MERGE_TYPE} != buildonly ]]; then
+		if kernel_is -lt ${MINKV//./ }; then
+			ewarn "Kernel version at least ${MINKV} required"
+		fi
+
+		if ! use firmware-loader && kernel_is -lt 3 8; then
+			ewarn "You seem to be using kernel older than 3.8. Those kernel versions"
+			ewarn "require systemd with USE=firmware-loader to support loading"
+			ewarn "firmware. Missing this flag may cause some hardware not to work."
+		fi
+
+		check_extra_config
+	fi
+}
+
+pkg_setup() {
+	use python && python-single-r1_pkg_setup
+}
+
 src_configure() {
 	local myeconfargs=(
 		--localstatedir=/var
-		--with-firmware-path="/lib/firmware/updates:/lib/firmware"
-		# install everything to /usr
-		--with-rootprefix=/usr
-		--with-rootlibdir=/usr/$(get_libdir)
-		# but pam modules have to lie in /lib*
 		--with-pamlibdir=$(getpam_mod_dir)
-		# avoid bash-completion dep, default is stupid
-		--with-bashcompletiondir=/usr/share/bash-completion
+		# avoid bash-completion dep
+		--with-bashcompletiondir="$(get_bashcompdir)"
 		# make sure we get /bin:/sbin in $PATH
 		--enable-split-usr
 		# disable sysv compatibility
 		--with-sysvinit-path=
 		--with-sysvrcnd-path=
-		# just text files
-		--enable-polkit
 		# no deps
-		--enable-keymap
 		--enable-efi
+		--enable-ima
 		# optional components/dependencies
 		$(use_enable acl)
 		$(use_enable audit)
@@ -98,16 +145,31 @@ src_configure() {
 		$(use_enable kmod)
 		$(use_enable lzma xz)
 		$(use_enable pam)
+		$(use_enable policykit polkit)
 		$(use_with python)
 		$(use python && echo PYTHON_CONFIG=/usr/bin/python-config-${EPYTHON#python})
 		$(use_enable qrcode qrencode)
 		$(use_enable selinux)
 		$(use_enable tcpd tcpwrap)
+		$(use_enable test tests)
 		$(use_enable xattr)
+
+		# not supported (avoid automagic deps in the future)
+		--disable-chkconfig
+
+		# hardcode a few paths to spare some deps
+		QUOTAON=/usr/sbin/quotaon
+		QUOTACHECK=/usr/sbin/quotacheck
 	)
 
 	# Keep using the one where the rules were installed.
 	MY_UDEVDIR=$(get_udevdir)
+
+	if use firmware-loader; then
+		myeconfargs+=(
+			--with-firmware-path="/lib/firmware/updates:/lib/firmware"
+		)
+	fi
 
 	# Work around bug 463846.
 	tc-export CC
@@ -135,9 +197,6 @@ src_install() {
 	# zsh completion
 	insinto /usr/share/zsh/site-functions
 	newins shell-completion/systemd-zsh-completion.zsh "_${PN}"
-
-	# remove pam.d plugin .la-file
-	prune_libtool_files --modules
 
 	# compat for init= use
 	dosym ../usr/lib/systemd/systemd /bin/systemd
@@ -176,14 +235,6 @@ src_install() {
 	done
 }
 
-pkg_preinst() {
-	local CONFIG_CHECK="~AUTOFS4_FS ~BLK_DEV_BSG ~CGROUPS ~DEVTMPFS
-		~FANOTIFY ~HOTPLUG ~INOTIFY_USER ~IPV6 ~NET ~PROC_FS ~SIGNALFD
-		~SYSFS ~!IDE ~!SYSFS_DEPRECATED ~!SYSFS_DEPRECATED_V2"
-	kernel_is -ge ${MINKV//./ } || ewarn "Kernel version at least ${MINKV} required"
-	check_extra_config
-}
-
 optfeature() {
 	local i desc=${1} text
 	shift
@@ -215,6 +266,9 @@ pkg_postinst() {
 		udevadm hwdb --update --root="${ROOT%/}"
 	fi
 
+	# Bug 468876
+	fcaps cap_dac_override,cap_sys_ptrace=ep usr/bin/systemd-detect-virt
+
 	if [[ ! -L "${ROOT}"/etc/mtab ]]; then
 		ewarn "Upstream suggests that the /etc/mtab file should be a symlink to /proc/mounts."
 		ewarn "It is known to cause users being unable to unmount user mounts. If you don't"
@@ -227,19 +281,6 @@ pkg_postinst() {
 	elog "be installed:"
 	optfeature 'for GTK+ systemadm UI and gnome-ask-password-agent' \
 		'sys-apps/systemd-ui'
-
-	# read null-terminated argv[0] from PID 1
-	# and see which path to systemd was used (if any)
-	local init_path
-	IFS= read -r -d '' init_path < /proc/1/cmdline
-	if [[ ${init_path} == */bin/systemd ]]; then
-		ewarn
-		ewarn "You are using a compatibility symlink to run systemd. The symlink"
-		ewarn "will be removed in near future. Please update your bootloader"
-		ewarn "to use:"
-		ewarn
-		ewarn "	init=/usr/lib/systemd/systemd"
-	fi
 }
 
 pkg_prerm() {

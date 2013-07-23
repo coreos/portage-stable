@@ -1,6 +1,43 @@
 # ChangeLog for sys-apps/systemd
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/ChangeLog,v 1.137 2013/05/25 20:18:41 ago Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/systemd/ChangeLog,v 1.146 2013/07/23 11:01:58 mgorny Exp $
+
+  23 Jul 2013; Michał Górny <mgorny@gentoo.org> systemd-206.ebuild:
+  Bump kmod dep per bug #477886.
+
+*systemd-206 (23 Jul 2013)
+
+  23 Jul 2013; Michał Górny <mgorny@gentoo.org> +systemd-206.ebuild,
+  systemd-9999.ebuild:
+  Version bump. Drop USE=keyword as it was replaced upstream by hwdb magic.
+
+  16 Jul 2013; Michał Górny <mgorny@gentoo.org> systemd-201.ebuild,
+  systemd-204.ebuild, systemd-205.ebuild, systemd-9999.ebuild:
+  Use get_bashcompdir for future bash-completion compat.
+
+  14 Jul 2013; Mike Gilbert <floppym@gentoo.org> systemd-205.ebuild,
+  systemd-9999.ebuild:
+  Set file capabilities on systemd-detect-virt, bug 468876 by Michał
+  Bartoszkiewicz.
+
+*systemd-205 (05 Jul 2013)
+
+  05 Jul 2013; Michał Górny <mgorny@gentoo.org> +systemd-205.ebuild,
+  -systemd-197-r1.ebuild, -systemd-200-r1.ebuild, -systemd-202.ebuild,
+  -systemd-203-r1.ebuild, systemd-9999.ebuild:
+  Version bump. Drop USE=static-libs since it is no longer supported. Drop old.
+
+  04 Jul 2013; Agostino Sarubbo <ago@gentoo.org> systemd-201.ebuild:
+  Stable for ppc64, wrt bug #465870
+
+  30 Jun 2013; Agostino Sarubbo <ago@gentoo.org> systemd-201.ebuild:
+  Stable for x86, wrt bug #465870
+
+  30 Jun 2013; Agostino Sarubbo <ago@gentoo.org> systemd-201.ebuild:
+  Stable for amd64, wrt bug #465870
+
+  20 Jun 2013; Agostino Sarubbo <ago@gentoo.org> systemd-204.ebuild:
+  Add ~ppc, wrt bug #465870
 
   25 May 2013; Agostino Sarubbo <ago@gentoo.org> systemd-201.ebuild:
   Stable for arm, wrt bug #465870
