@@ -1,10 +1,10 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-lang/yasm/yasm-1.2.0-r1.ebuild,v 1.1 2013/01/15 17:31:52 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-lang/yasm/yasm-1.2.0-r1.ebuild,v 1.3 2013/06/30 15:09:42 jlec Exp $
 
-EAPI=4
-PYTHON_DEPEND="python? 2:2.7"
-inherit autotools eutils python
+EAPI=5
+PYTHON_COMPAT=( python{2_6,2_7} )
+inherit autotools eutils python-r1
 
 DESCRIPTION="An assembler for x86 and x86_64 instruction sets"
 HOMEPAGE="http://yasm.tortall.net/"
@@ -13,23 +13,22 @@ SRC_URI="http://www.tortall.net/projects/yasm/releases/${P}.tar.gz
 
 LICENSE="BSD-2 BSD || ( Artistic GPL-2 LGPL-2 )"
 SLOT="0"
-KEYWORDS="-* amd64 ~x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x64-macos ~x86-macos ~x86-solaris"
+KEYWORDS="-* ~amd64 ~x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x64-macos ~x86-macos ~x86-solaris"
 IUSE="nls python"
+
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="nls? ( virtual/libintl )"
 DEPEND="nls? ( sys-devel/gettext )
-	python? ( >=dev-python/cython-0.14 )"
+	python? (
+		${PYTHON_DEPS}
+		>=dev-python/cython-0.14[${PYTHON_USEDEP}]
+		)"
 
 DOCS=( AUTHORS )
 
-pkg_setup() {
-	if use python; then
-		python_set_active_version 2
-		python_pkg_setup
-	fi
-}
-
 src_prepare() {
+	sed -i -e 's:xmlto:&dIsAbLe:' configure.ac || die #459940
 	epatch "${WORKDIR}"/${P}-x32.patch #435838
 	chmod a+rx modules/objfmts/elf/tests/{gas,}x32/*_test.sh
 	epatch "${FILESDIR}/${P}-fix_cython_check.patch"
@@ -39,6 +38,8 @@ src_prepare() {
 }
 
 src_configure() {
+	use python && python_export_best
+
 	econf \
 		$(use_enable python) \
 		$(use_enable python python-bindings) \
