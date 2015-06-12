@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-kernel/dracut/dracut-041-r2.ebuild,v 1.2 2015/03/31 10:54:29 aidecoe Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-kernel/dracut/dracut-041-r3.ebuild,v 1.3 2015/06/07 16:39:50 aidecoe Exp $
 
 EAPI=4
 
@@ -49,9 +49,11 @@ DOCS=( AUTHORS HACKING NEWS README README.generic README.kernel README.modules
 	README.testsuite TODO )
 MY_LIBDIR=/usr/lib
 PATCHES=(
-	"${FILESDIR}/${PVR}-0001-Use-the-same-paths-in-dracut.sh-as-tho.patch"
-	"${FILESDIR}/${PVR}-0002-Install-dracut-install-and-skipcpio-in.patch"
-	"${FILESDIR}/${PVR}-0003-Take-into-account-lib64-dirs-when-dete.patch"
+	"${FILESDIR}/${PV}-0001-Use-the-same-paths-in-dracut.sh-as-tho.patch"
+	"${FILESDIR}/${PV}-0002-Install-dracut-install-and-skipcpio-in.patch"
+	"${FILESDIR}/${PV}-0003-Take-into-account-lib64-dirs-when-dete.patch"
+	"${FILESDIR}/${PV}-0004-Portability-fixes.patch"
+	"${FILESDIR}/${PV}-0005-base-dracut-lib.sh-remove-bashism.patch"
 	)
 QA_MULTILIB_PATHS="
 	usr/lib/dracut/dracut-install
