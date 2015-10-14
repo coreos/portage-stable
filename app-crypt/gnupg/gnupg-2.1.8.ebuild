@@ -1,10 +1,10 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-crypt/gnupg/gnupg-2.1.4.ebuild,v 1.2 2015/05/21 04:39:45 mattst88 Exp $
+# $Id$
 
 EAPI="5"
 
-inherit autotools eutils flag-o-matic toolchain-funcs
+inherit eutils flag-o-matic toolchain-funcs
 
 DESCRIPTION="The GNU Privacy Guard, a GPL OpenPGP implementation"
 HOMEPAGE="http://www.gnupg.org/"
@@ -13,13 +13,13 @@ SRC_URI="mirror://gnupg/gnupg/${MY_P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~mips ~ppc ~ppc64 ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~mips ~ppc ~ppc64 ~sparc ~x86"
 IUSE="bzip2 doc +gnutls ldap nls readline static selinux smartcard tools usb"
 
 COMMON_DEPEND_LIBS="
 	dev-libs/npth
 	>=dev-libs/libassuan-2
-	>=dev-libs/libgcrypt-1.6.2
+	>=dev-libs/libgcrypt-1.6.2[threads]
 	>=dev-libs/libgpg-error-1.17
 	>=dev-libs/libksba-1.0.7
 	>=net-misc/curl-7.10
@@ -27,7 +27,7 @@ COMMON_DEPEND_LIBS="
 	sys-libs/zlib
 	ldap? ( net-nds/openldap )
 	bzip2? ( app-arch/bzip2 )
-	readline? ( sys-libs/readline )
+	readline? ( sys-libs/readline:= )
 	smartcard? ( usb? ( virtual/libusb:0 ) )
 	"
 COMMON_DEPEND_BINS="app-crypt/pinentry
@@ -59,7 +59,6 @@ REQUIRED_USE="smartcard? ( !static )"
 S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-2.0.17-gpgsm-gencert.patch"
 	epatch_user
 }
 
@@ -85,6 +84,9 @@ src_configure() {
 	else
 		myconf+=( --enable-symcryptrun )
 	fi
+
+	# glib fails and picks up clang's internal stdint.h causing weird errors
+	[[ ${CC} == clang ]] && export gl_cv_absolute_stdint_h=/usr/include/stdint.h
 
 	econf \
 		--docdir="${EPREFIX}/usr/share/doc/${PF}" \

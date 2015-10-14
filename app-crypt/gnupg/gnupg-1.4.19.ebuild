@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-crypt/gnupg/gnupg-1.4.19.ebuild,v 1.11 2015/03/30 10:02:07 ago Exp $
+# $Id$
 
 EAPI="5"
 
@@ -107,7 +107,7 @@ pkg_postinst() {
 #		ewarn "Further info available at http://alumnes.eps.udl.es/%7Ed4372211/index.en.html"
 #	fi
 	elog
-	elog "See http://www.gentoo.org/doc/en/gnupg-user.xml for documentation on gnupg"
+	elog "See https://www.gentoo.org/doc/en/gnupg-user.xml for documentation on gnupg"
 	elog
 	elog "If you wish to view images emerge:"
 	elog "media-gfx/xloadimage, media-gfx/xli or any other viewer"
