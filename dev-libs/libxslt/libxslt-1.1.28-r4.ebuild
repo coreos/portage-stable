@@ -1,10 +1,10 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libxslt/libxslt-1.1.28-r3.ebuild,v 1.6 2014/08/07 18:14:54 jer Exp $
+# $Id$
 
 EAPI=5
 
-PYTHON_COMPAT=( python{2_6,2_7} )
+PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="xml"
 
 inherit autotools eutils python-r1 toolchain-funcs multilib-minimal
@@ -15,12 +15,12 @@ SRC_URI="ftp://xmlsoft.org/${PN}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~arm64 hppa ~ia64 ~m68k ~mips ppc ~ppc64 ~s390 ~sh ~sparc x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~ia64-hpux ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~ia64-hpux ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 IUSE="crypt debug python static-libs"
 
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
-RDEPEND=">=dev-libs/libxml2-2.9.1-r4:2[${MULTILIB_USEDEP}]
+RDEPEND=">=dev-libs/libxml2-2.9.1-r5:2[${MULTILIB_USEDEP}]
 	crypt?  ( >=dev-libs/libgcrypt-1.5.3:0=[${MULTILIB_USEDEP}] )
 	python? (
 		${PYTHON_DEPS}
@@ -32,6 +32,10 @@ RDEPEND=">=dev-libs/libxml2-2.9.1-r4:2[${MULTILIB_USEDEP}]
 "
 DEPEND="${RDEPEND}"
 
+MULTILIB_CHOST_TOOLS=(
+	/usr/bin/xslt-config
+)
+
 src_prepare() {
 	DOCS=( AUTHORS ChangeLog FEATURES NEWS README TODO )
 
@@ -42,7 +46,11 @@ src_prepare() {
 
 	# use AC_PATH_TOOL for libgcrypt-config for sane cross-compile and multilib support
 	# https://bugzilla.gnome.org/show_bug.cgi?id=725635
-	epatch "${FILESDIR}"/${PN}-1.1.28-libgcrypt-config.patch
+	# same for xml2-config
+	# https://bugs.gentoo.org/show_bug.cgi?id=518728
+	epatch "${FILESDIR}"/${PN}-1.1.28-AC_PATH_TOOL.patch
+
+	mv configure.{in,ac} || die
 
 	eautoreconf
 	# If eautoreconf'd with new autoconf, then epunt_cxx is not necessary
@@ -73,7 +81,7 @@ multilib_src_configure() {
 	libxslt_configure --without-python # build python bindings separately
 
 	if multilib_is_native_abi && use python; then
-		python_parallel_foreach_impl libxslt_py_configure
+		python_foreach_impl libxslt_py_configure
 	fi
 }
 
