@@ -13,12 +13,12 @@ SRC_URI="mirror://gnupg/gnupg/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm ~arm64 hppa ~ia64 ~mips ~ppc ppc64 ~s390 ~sh sparc x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 IUSE="bzip2 doc ldap nls mta readline static selinux smartcard tools usb"
 
 COMMON_DEPEND_LIBS="
 	>=dev-libs/libassuan-2
-	>=dev-libs/libgcrypt-1.4:0=
+	>=dev-libs/libgcrypt-1.5:0=
 	>=dev-libs/libgpg-error-1.11
 	>=dev-libs/libksba-1.0.7
 	>=dev-libs/pth-1.3.7
@@ -57,8 +57,6 @@ REQUIRED_USE="smartcard? ( !static )"
 
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-2.0.17-gpgsm-gencert.patch"
-	epatch "${FILESDIR}/${P}-Need-to-init-the-trustdb-for-import.patch"
-	epatch "${FILESDIR}/${P}-misc-cve.patch"
 	epatch_user
 }
 
@@ -85,11 +83,15 @@ src_configure() {
 		myconf+=( --enable-symcryptrun )
 	fi
 
+	# glib fails and picks up clang's internal stdint.h causing weird errors
+	[[ ${CC} == clang ]] && export gl_cv_absolute_stdint_h=/usr/include/stdint.h
+
 	econf \
 		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
 		--enable-gpg \
 		--enable-gpgsm \
 		--enable-agent \
+		--enable-large-secmem \
 		--without-adns \
 		"${myconf[@]}" \
 		$(use_enable bzip2) \
