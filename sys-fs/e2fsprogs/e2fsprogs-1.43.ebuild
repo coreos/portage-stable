@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=4
+EAPI="5"
 
 case ${PV} in
 *_pre*) UP_PV="${PV%_pre*}-WIP-${PV#*_pre}" ;;
@@ -13,12 +13,13 @@ inherit eutils flag-o-matic multilib toolchain-funcs
 
 DESCRIPTION="Standard EXT2/EXT3/EXT4 filesystem utilities"
 HOMEPAGE="http://e2fsprogs.sourceforge.net/"
-SRC_URI="mirror://sourceforge/e2fsprogs/${PN}-${UP_PV}.tar.gz
+SRC_URI="mirror://sourceforge/e2fsprogs/${PN}-${UP_PV}.tar.xz
+	mirror://kernel/linux/kernel/people/tytso/e2fsprogs/v${UP_PV}/${PN}-${UP_PV}.tar.xz
 	elibc_mintlib? ( mirror://gentoo/${PN}-1.42.9-mint-r1.patch.xz )"
 
 LICENSE="GPL-2 BSD"
 SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 -x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~m68k-mint"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 -x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~m68k-mint"
 IUSE="nls static-libs elibc_FreeBSD"
 
 RDEPEND="~sys-libs/${PN}-libs-${PV}
@@ -37,7 +38,8 @@ src_prepare() {
 	if [[ ${CHOST} == *-mint* ]] ; then
 		epatch "${WORKDIR}"/${PN}-1.42.9-mint-r1.patch
 	fi
-	epatch "${FILESDIR}"/${PN}-1.42.10-fix-build-cflags.patch #516854
+	epatch "${FILESDIR}"/${PN}-1.42.13-fix-build-cflags.patch #516854
+	epatch "${FILESDIR}"/${PN}-1.43-sysmacros.patch
 
 	# blargh ... trick e2fsprogs into using e2fsprogs-libs
 	rm -rf doc
@@ -72,7 +74,6 @@ src_configure() {
 		$(use_enable nls) \
 		--disable-libblkid \
 		--disable-libuuid \
-		--disable-quota \
 		--disable-fsck \
 		--disable-uuidd
 	if [[ ${CHOST} != *-uclibc ]] && grep -qs 'USE_INCLUDED_LIBINTL.*yes' config.{log,status} ; then
