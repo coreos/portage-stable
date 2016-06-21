@@ -1,0 +1,31 @@
+# ChangeLog for app-emulation/containerd
+# Copyright 1999-2016 Gentoo Foundation; Distributed under the GPL v2
+# (auto-generated from git log)
+
+*containerd-9999 (17 Apr 2016)
+*containerd-0.2.0 (17 Apr 2016)
+
+  17 Apr 2016; Kacper Kowalik <xarthisius@gentoo.org>
+  +containerd-0.2.0.ebuild, +containerd-9999.ebuild, +metadata.xml:
+  initial import
+
+  Ebuild based on Tianon's work
+
+  https://github.com/tianon/docker-overlay/tree/master/app-
+  emulation/containerd
+
+  Package-Manager: portage-2.2.27
+
+  26 Apr 2016; Kacper Kowalik <xarthisius@gentoo.org> containerd-0.2.0.ebuild,
+  containerd-9999.ebuild:
+  fix malformed ebuild header
+
+  Package-Manager: portage-2.2.27
+
+  27 Apr 2016; Agostino Sarubbo <ago@gentoo.org> containerd-0.2.0.ebuild:
+  amd64 stable wrt bug #581236
+
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="amd64"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
+
