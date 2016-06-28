@@ -160,3 +160,47 @@
   +files/automake-1.15-mdate-tz.patch:
   make mdate output stable #520818 #574492
 
+  13 May 2016; Mike Frysinger <vapier@gentoo.org> automake-1.11.6-r2.ebuild,
+  automake-1.12.6.ebuild, automake-1.12.6-r1.ebuild, automake-1.13.4.ebuild,
+  automake-1.13.4-r1.ebuild, automake-1.14.1.ebuild,
+  automake-1.14.1-r1.ebuild, automake-1.15.ebuild, automake-1.15-r1.ebuild,
+  automake-1.15-r2.ebuild:
+  rework how HELP2MAN is set up #582734
+
+  Only the 1.11 release used this variable -- later versions bundle a copy
+  and use that rather than the system one.  Move the export to prepare so
+  the configure function stays the same across versions.
+
+  13 May 2016; Mike Frysinger <vapier@gentoo.org> automake-1.4_p6-r2.ebuild,
+  automake-1.5-r2.ebuild, automake-1.6.3-r2.ebuild, automake-1.7.9-r3.ebuild,
+  automake-1.8.5-r5.ebuild, automake-1.9.6-r4.ebuild,
+  automake-1.10.3-r1.ebuild, automake-1.10.3-r2.ebuild,
+  automake-1.11.6-r1.ebuild, automake-1.11.6-r2.ebuild,
+  automake-1.12.6.ebuild, automake-1.12.6-r1.ebuild, automake-1.13.4.ebuild,
+  automake-1.13.4-r1.ebuild, automake-1.14.1.ebuild,
+  automake-1.14.1-r1.ebuild, automake-1.15.ebuild, automake-1.15-r1.ebuild,
+  automake-1.15-r2.ebuild, automake-9999.ebuild:
+  respect $ED #582734
+
+  13 May 2016; Mike Frysinger <vapier@gentoo.org> automake-1.10.3-r1.ebuild,
+  automake-1.10.3-r2.ebuild, automake-1.11.6-r1.ebuild,
+  automake-1.11.6-r2.ebuild, automake-1.12.6.ebuild,
+  automake-1.12.6-r1.ebuild, automake-1.13.4.ebuild,
+  automake-1.13.4-r1.ebuild, automake-1.14.1.ebuild,
+  automake-1.14.1-r1.ebuild, automake-1.15.ebuild, automake-1.15-r1.ebuild,
+  automake-1.15-r2.ebuild, automake-9999.ebuild:
+  rework --docdir flag for automatic prefix support #582734
+
+  19 May 2016; Benda Xu <heroxbd@gentoo.org> automake-1.11.6-r1.ebuild,
+  automake-1.11.6-r2.ebuild, automake-1.12.6.ebuild,
+  automake-1.12.6-r1.ebuild, automake-1.13.4.ebuild,
+  automake-1.13.4-r1.ebuild, automake-1.14.1.ebuild,
+  automake-1.14.1-r1.ebuild, automake-1.15.ebuild, automake-1.15-r1.ebuild,
+  automake-1.15-r2.ebuild:
+  bump to EAPI5. Rework APIVERSION and pkgvdatadir.
+    Patch configure to leverage defaults of src_compile and src_install.
+    pkgvdatadir now implicitly respects EPREFIX.
+  Bug: 582734
+
+  Package-Manager: portage-2.2.28
+
