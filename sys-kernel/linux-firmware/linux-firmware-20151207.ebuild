@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-kernel/linux-firmware/linux-firmware-20130530.ebuild,v 1.3 2013/06/24 13:21:08 zerochaos Exp $
+# $Id$
 
 EAPI=5
 inherit savedconfig
@@ -9,14 +9,14 @@ if [[ ${PV} == 99999999* ]]; then
 	inherit git-2
 	SRC_URI=""
 	EGIT_REPO_URI="git://git.kernel.org/pub/scm/linux/kernel/git/firmware/${PN}.git"
-	KEYWORDS=""
+	KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86"
 else
 	SRC_URI="mirror://gentoo/${P}.tar.xz"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~x86"
+	KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86"
 fi
 
 DESCRIPTION="Linux firmware files"
-HOMEPAGE="http://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git"
+HOMEPAGE="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git"
 
 LICENSE="GPL-1 GPL-2 GPL-3 BSD freedist"
 SLOT="0"
@@ -44,6 +44,7 @@ RDEPEND="!savedconfig? (
 		!net-wireless/rt2860-firmware
 		!net-wireless/rt2870-firmware
 		!sys-block/qla-fc-firmware
+		!sys-firmware/amd-ucode
 		!sys-firmware/iwl1000-ucode
 		!sys-firmware/iwl2000-ucode
 		!sys-firmware/iwl2030-ucode
@@ -55,7 +56,11 @@ RDEPEND="!savedconfig? (
 		!sys-firmware/iwl6005-ucode
 		!sys-firmware/iwl6030-ucode
 		!sys-firmware/iwl6050-ucode
-		!x11-drivers/radeon-ucode
+		!sys-firmware/iwl3160-ucode
+		!sys-firmware/iwl7260-ucode
+		!sys-firmware/iwl7265-ucode
+		!sys-firmware/iwl3160-7260-bt-ucode
+		!sys-firmware/radeon-ucode
 	)"
 #add anything else that collides to this
 

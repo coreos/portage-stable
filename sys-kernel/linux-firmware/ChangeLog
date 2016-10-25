@@ -1,424 +1,360 @@
 # ChangeLog for sys-kernel/linux-firmware
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/sys-kernel/linux-firmware/ChangeLog,v 1.88 2013/09/26 17:27:12 ago Exp $
+# Copyright 1999-2016 Gentoo Foundation; Distributed under the GPL v2
+# (auto-generated from git log)
+
+*linux-firmware-99999999 (09 Aug 2015)
+*linux-firmware-20150320 (09 Aug 2015)
+*linux-firmware-20150206 (09 Aug 2015)
+*linux-firmware-20141009 (09 Aug 2015)
+*linux-firmware-20140902 (09 Aug 2015)
+*linux-firmware-20140809 (09 Aug 2015)
+*linux-firmware-20140603 (09 Aug 2015)
+
+  09 Aug 2015; Robin H. Johnson <robbat2@gentoo.org>
+  +linux-firmware-20140603.ebuild, +linux-firmware-20140809.ebuild,
+  +linux-firmware-20140902.ebuild, +linux-firmware-20141009.ebuild,
+  +linux-firmware-20150206.ebuild, +linux-firmware-20150320.ebuild,
+  +linux-firmware-99999999.ebuild, +metadata.xml:
+  proj/gentoo: Initial commit
+
+  This commit represents a new era for Gentoo:
+  Storing the gentoo-x86 tree in Git, as converted from CVS.
+
+  This commit is the start of the NEW history.
+  Any historical data is intended to be grafted onto this point.
+
+  Creation process:
+  1. Take final CVS checkout snapshot
+  2. Remove ALL ChangeLog* files
+  3. Transform all Manifests to thin
+  4. Remove empty Manifests
+  5. Convert all stale $Header$/$Id$ CVS keywords to non-expanded Git $Id$
+  5.1. Do not touch files with -kb/-ko keyword flags.
+
+  Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
+  X-Thanks: Alec Warner <antarus@gentoo.org> - did the GSoC 2006 migration
+  tests
+  X-Thanks: Robin H. Johnson <robbat2@gentoo.org> - infra guy, herding this
+  project
+  X-Thanks: Nguyen Thai Ngoc Duy <pclouds@gentoo.org> - Former Gentoo
+  developer, wrote Git features for the migration
+  X-Thanks: Brian Harring <ferringb@gentoo.org> - wrote much python to improve
+  cvs2svn
+  X-Thanks: Rich Freeman <rich0@gentoo.org> - validation scripts
+  X-Thanks: Patrick Lauer <patrick@gentoo.org> - Gentoo dev, running new 2014
+  work in migration
+  X-Thanks: Michał Górny <mgorny@gentoo.org> - scripts, QA, nagging
+  X-Thanks: All of other Gentoo developers - many ideas and lots of paint on
+  the bikeshed
 
-  26 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for arm, wrt bug #485376
+  24 Aug 2015; Justin Lecher <jlec@gentoo.org> metadata.xml:
+  Use https by default
 
-  25 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for ppc, wrt bug #485376
+  Convert all URLs for sites supporting encrypted connections from http to
+  https
+
+  Signed-off-by: Justin Lecher <jlec@gentoo.org>
 
-  23 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for sparc, wrt bug #485376
+  24 Aug 2015; Justin Lecher <jlec@gentoo.org> linux-firmware-20140603.ebuild,
+  linux-firmware-20140809.ebuild, linux-firmware-20140902.ebuild,
+  linux-firmware-20141009.ebuild, linux-firmware-20150206.ebuild,
+  linux-firmware-20150320.ebuild, linux-firmware-99999999.ebuild:
+  Use https for kernel.org and redhat.com
 
-  23 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for ppc64, wrt bug #485376
+  Signed-off-by: Justin Lecher <jlec@gentoo.org>
 
-  23 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for alpha, wrt bug #485376
+  24 Aug 2015; Mike Gilbert <floppym@gentoo.org> metadata.xml:
+  Revert DOCTYPE SYSTEM https changes in metadata.xml
 
-  22 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for x86, wrt bug #485376
+  repoman does not yet accept the https version.
+  This partially reverts eaaface92ee81f30a6ac66fe7acbcc42c00dc450.
 
-  21 Sep 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for amd64, wrt bug #485376
+  Bug: https://bugs.gentoo.org/552720
 
-  19 Sep 2013; Jeroen Roovers <jer@gentoo.org> linux-firmware-20130728.ebuild:
-  Stable for HPPA (bug #485376).
+*linux-firmware-20150812 (01 Sep 2015)
 
-  05 Sep 2013; Mike Frysinger <vapier@gentoo.org>
-  linux-firmware-20130728.ebuild, linux-firmware-99999999.ebuild:
-  Add s390/sh/sparc love #457082.
+  01 Sep 2015; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20150812.ebuild:
+  new snapshot
 
-*linux-firmware-20130728 (29 Jul 2013)
+  Package-Manager: portage-2.2.20.1
 
-  29 Jul 2013; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20130728.ebuild:
-  New snapshot.
+  01 Sep 2015; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  linux-firmware-20140603.ebuild, linux-firmware-20140809.ebuild,
+  linux-firmware-20140902.ebuild, linux-firmware-20141009.ebuild,
+  linux-firmware-20150206.ebuild, linux-firmware-20150320.ebuild,
+  linux-firmware-20150812.ebuild, linux-firmware-99999999.ebuild:
+  x11-drivers/radeon-ucode: move to sys-firmware/radeon-ucode
 
-*linux-firmware-20130711 (17 Jul 2013)
+  30 Oct 2015; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  amd64 stable wrt bug #564408
 
-  17 Jul 2013; Rick Farina <zerochaos@gentoo.org>
-  +linux-firmware-20130711.ebuild, linux-firmware-99999999.ebuild:
-  linux-firmware git now includes amd-ucode, add blocker and new snapshot
+  Package-Manager: portage-2.2.20.1
+  RepoMan-Options: --include-arches="amd64"
 
-  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for arm, wrt bug #473732
+  31 Oct 2015; Jeroen Roovers <jer@gentoo.org> linux-firmware-20150812.ebuild:
+  Stable for HPPA PPC64 (bug #564408).
 
-  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for ia64, wrt bug #473732
+  Package-Manager: portage-2.2.23
+  RepoMan-Options: --ignore-arches
 
-  26 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for alpha, wrt bug #473732
+  01 Nov 2015; Mikle Kolyada <zlogene@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  x86 stable wrt bug #564408
 
-  25 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for amd64, wrt bug #473732
+  Package-Manager: portage-2.2.20.1
 
-  25 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for x86, wrt bug #473732
+  04 Nov 2015; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  ppc stable wrt bug #564408
 
-  25 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for ppc64, wrt bug #473732
+  Package-Manager: portage-2.2.20.1
+  RepoMan-Options: --include-arches="ppc"
 
-  24 Jun 2013; Rick Farina <zerochaos@gentoo.org>
-  linux-firmware-20120719.ebuild, linux-firmware-20120816.ebuild,
-  linux-firmware-20120909.ebuild, linux-firmware-20120924.ebuild,
-  linux-firmware-20121030.ebuild, linux-firmware-20121225.ebuild,
-  linux-firmware-20130113.ebuild, linux-firmware-20130421.ebuild,
-  linux-firmware-20130530.ebuild, linux-firmware-99999999.ebuild:
-  adjust blockers as noted in bug #474130
+  05 Nov 2015; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  sparc stable wrt bug #564408
 
-  24 Jun 2013; Agostino Sarubbo <ago@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for ppc, wrt bug #473732
+  Package-Manager: portage-2.2.20.1
+  RepoMan-Options: --include-arches="sparc"
 
-  19 Jun 2013; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20130421.ebuild, linux-firmware-20130530.ebuild,
-  linux-firmware-99999999.ebuild:
-  Add blockers against alsa-firmware[alsa_cards_ca0132], bug #473784.
+  10 Nov 2015; Markus Meier <maekke@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  arm stable, bug #564408
 
-  18 Jun 2013; Jeroen Roovers <jer@gentoo.org> linux-firmware-20130421.ebuild:
-  Stable for HPPA (bug #473732).
+  Package-Manager: portage-2.2.23
+  RepoMan-Options: --include-arches="arm"
 
-*linux-firmware-20130530 (18 Jun 2013)
+  16 Nov 2015; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  ia64 stable wrt bug #564408
 
-  18 Jun 2013; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20130530.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.20.1
+  RepoMan-Options: --include-arches="ia64"
 
-  14 May 2013; Anthony G. Basile <blueness@gentoo.org>
-  linux-firmware-20130421.ebuild, linux-firmware-99999999.ebuild:
-  Keywork ~ppc ~ppc64, bug #457082
+  23 Nov 2015; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20150812.ebuild:
+  alpha stable wrt bug #564408
 
-  11 May 2013; Matt Turner <mattst88@gentoo.org> linux-firmware-20130421.ebuild,
-  linux-firmware-99999999.ebuild:
-  Added ~alpha and ~mips, bug 457082.
+  Package-Manager: portage-2.2.20.1
+  RepoMan-Options: --include-arches="alpha"
 
-*linux-firmware-20130421 (21 Apr 2013)
+*linux-firmware-20151207 (07 Jan 2016)
 
-  21 Apr 2013; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20130421.ebuild, linux-firmware-99999999.ebuild:
-  New snapshot.
+  07 Jan 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20151207.ebuild:
+  new snapshot
 
-  16 Apr 2013; Samuli Suominen <ssuominen@gentoo.org>
-  linux-firmware-20120719.ebuild, linux-firmware-20120816.ebuild,
-  linux-firmware-20120909.ebuild, linux-firmware-20120924.ebuild,
-  linux-firmware-20121030.ebuild, linux-firmware-20121225.ebuild,
-  linux-firmware-20130113.ebuild, linux-firmware-99999999.ebuild:
-  Update dependencies for the alsa-firmware move from media-sound category to
-  sys-firmware category.
+  Package-Manager: portage-2.2.26
 
-  14 Feb 2013; Jeroen Roovers <jer@gentoo.org> linux-firmware-20120719.ebuild,
-  linux-firmware-20120816.ebuild, linux-firmware-20120909.ebuild,
-  linux-firmware-20120924.ebuild, linux-firmware-20121030.ebuild,
-  linux-firmware-20121225.ebuild, linux-firmware-20130113.ebuild:
-  Add HPPA keywording (bug #457082).
+  07 Jan 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  -linux-firmware-20140603.ebuild, -linux-firmware-20140809.ebuild,
+  -linux-firmware-20140902.ebuild, -linux-firmware-20141009.ebuild:
+  remove some older ebuilds
 
-  11 Feb 2013; Samuli Suominen <ssuominen@gentoo.org>
-  linux-firmware-20120719.ebuild, linux-firmware-20120816.ebuild,
-  linux-firmware-20120909.ebuild, linux-firmware-20120924.ebuild,
-  linux-firmware-20121030.ebuild, linux-firmware-20121225.ebuild,
-  linux-firmware-20130113.ebuild, linux-firmware-99999999.ebuild:
-  Block only old revision of ivtv-firmware for the v4l-cx25840.fw file
-  collision wrt #362361
+  Package-Manager: portage-2.2.26
 
-*linux-firmware-20130113 (06 Feb 2013)
+  24 Jan 2016; Michał Górny <mgorny@gentoo.org> metadata.xml:
+  Unify quoting in metadata.xml files for machine processing
 
-  06 Feb 2013; Rick Farina <zerochaos@gentoo.org>
-  +linux-firmware-20130113.ebuild, linux-firmware-99999999.ebuild, metadata.xml:
-  new snapshot and bump eapi for fun
+  Force unified quoting in all metadata.xml files since lxml does not
+  preserve original use of single and double quotes. Ensuring unified
+  quoting before the process allows distinguishing the GLEP 67-related
+  metadata.xml changes from unrelated quoting changes.
 
-*linux-firmware-20121225 (01 Jan 2013)
+  24 Jan 2016; Michał Górny <mgorny@gentoo.org> metadata.xml:
+  Replace all herds with appropriate projects (GLEP 67)
 
-  01 Jan 2013; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20121225.ebuild:
-  New snapshot.
+  Replace all uses of herd with appropriate project maintainers, or no
+  maintainers in case of herds requested to be disbanded.
 
-  04 Dec 2012;  <ago@gentoo.org> linux-firmware-20120924.ebuild:
-  Stable for x86, wrt bug #441668
+  24 Jan 2016; Michał Górny <mgorny@gentoo.org> metadata.xml:
+  Set appropriate maintainer types in metadata.xml (GLEP 67)
 
-  13 Nov 2012; Anthony G. Basile <blueness@gentoo.org>
-  linux-firmware-20120924.ebuild:
-  stable arm, bug #441668
+  01 Feb 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  amd64 stable wrt bug #573130
 
-  04 Nov 2012; Agostino Sarubbo <ago@gentoo.org>
-  linux-firmware-20120924.ebuild:
-  Stable for amd64, wrt bug #441668
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="amd64"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-*linux-firmware-20121030 (04 Nov 2012)
+  04 Feb 2016; Tobias Klausmann <klausman@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  add alpha keyword
 
-  04 Nov 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20121030.ebuild:
-  New snapshot.
+  Gentoo-Bug: 573130
 
-*linux-firmware-20120924 (03 Oct 2012)
+  Package-Manager: portage-2.2.27
 
-  03 Oct 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120924.ebuild, -linux-firmware-20120502.ebuild,
-  -linux-firmware-20120615.ebuild, -linux-firmware-20120708.ebuild,
-  linux-firmware-20120719.ebuild, linux-firmware-20120816.ebuild,
-  linux-firmware-20120909.ebuild, linux-firmware-99999999.ebuild:
-  New snapshot. Remove old. Block iwl2000-ucode.
+  10 Feb 2016; Markus Meier <maekke@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  arm stable, bug #573130
 
-  18 Sep 2012; Johannes Huber <johu@gentoo.org> linux-firmware-20120719.ebuild:
-  Stable for x86, wrt bug #433006
+  Package-Manager: portage-2.2.27
+  RepoMan-Options: --include-arches="arm"
 
-*linux-firmware-20120909 (16 Sep 2012)
+  14 Feb 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  x86 stable wrt bug #573130
 
-  16 Sep 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120909.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="x86"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-  16 Sep 2012; Markus Meier <maekke@gentoo.org> linux-firmware-20120719.ebuild:
-  arm stable, bug #433006
+*linux-firmware-20160223 (10 Mar 2016)
 
-  06 Sep 2012; Agostino Sarubbo <ago@gentoo.org>
-  linux-firmware-20120719.ebuild:
-  Stable for amd64, wrt bug #433006
+  10 Mar 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20160223.ebuild, linux-firmware-99999999.ebuild:
+  new snapshot, re-save config file conditionally
 
-*linux-firmware-20120816 (27 Aug 2012)
+  Bug: https://bugs.gentoo.org/show_bug.cgi?id=546690
 
-  27 Aug 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120816.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
 
-  18 Aug 2012; Ulrich Müller <ulm@gentoo.org> linux-firmware-20120502.ebuild,
-  linux-firmware-20120615.ebuild, linux-firmware-20120708.ebuild,
-  linux-firmware-20120719.ebuild, linux-firmware-99999999.ebuild:
-  Update blockers after package move of iwl1000-*, bug 429868.
+  16 Mar 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  ppc stable wrt bug #573130
 
-  06 Aug 2012; Ulrich Müller <ulm@gentoo.org> linux-firmware-20120502.ebuild,
-  linux-firmware-20120615.ebuild, linux-firmware-20120708.ebuild,
-  linux-firmware-20120719.ebuild, linux-firmware-99999999.ebuild:
-  Update blocker after package move of iwl1000-ucode, bug 429868.
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="ppc"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-*linux-firmware-20120719 (29 Jul 2012)
+  17 Mar 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  ppc64 stable wrt bug #573130
 
-  29 Jul 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120719.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="ppc64"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-*linux-firmware-20120708 (13 Jul 2012)
+  19 Mar 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  sparc stable wrt bug #573130
 
-  13 Jul 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120708.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="sparc"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-*linux-firmware-20120615 (15 Jun 2012)
+  20 Mar 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20151207.ebuild:
+  ia64 stable wrt bug #573130
 
-  15 Jun 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120615.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
+  RepoMan-Options: --include-arches="ia64"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-  12 Jun 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  -linux-firmware-20110731.ebuild, -linux-firmware-20110818.ebuild,
-  -linux-firmware-20120125.ebuild, -linux-firmware-20120219.ebuild,
-  linux-firmware-20120502.ebuild, linux-firmware-99999999.ebuild:
-  Add iwl2030-ucode to blockers, drop old.
+  05 Apr 2016; Jeroen Roovers <jer@gentoo.org> linux-firmware-20151207.ebuild:
+  Stable for HPPA (bug #573130).
 
-  09 Jun 2012; Markus Meier <maekke@gentoo.org> linux-firmware-20120502.ebuild:
-  arm stable, bug #419489
+  Package-Manager: portage-2.2.28
+  RepoMan-Options: --ignore-arches
 
-  08 Jun 2012; Pawel Hajdan jr <phajdan.jr@gentoo.org>
-  linux-firmware-20120502.ebuild:
-  x86 stable wrt bug #419489
+*linux-firmware-20160331 (07 Apr 2016)
 
-  03 Jun 2012; Agostino Sarubbo <ago@gentoo.org>
-  linux-firmware-20120502.ebuild:
-  Stable for amd64, wrt bug #419489
+  07 Apr 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20160331.ebuild:
+  new snapshot
 
-  28 May 2012; Raúl Porcel <armin76@gentoo.org>
-  linux-firmware-20120125.ebuild, linux-firmware-20120219.ebuild,
-  linux-firmware-20120502.ebuild:
-  Add ~ia64 wrt #413665
+  Package-Manager: portage-2.2.26
 
-*linux-firmware-20120502 (03 May 2012)
+  07 Apr 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  -linux-firmware-20150206.ebuild, -linux-firmware-20150320.ebuild,
+  -linux-firmware-20150812.ebuild:
+  remove old
 
-  03 May 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120502.ebuild, linux-firmware-99999999.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.2.26
 
-  24 Mar 2012; Pawel Hajdan jr <phajdan.jr@gentoo.org>
-  linux-firmware-20120125.ebuild:
-  x86 stable wrt bug #406931
+*linux-firmware-20160616 (17 May 2016)
 
-  19 Mar 2012; Markus Meier <maekke@gentoo.org> linux-firmware-20120125.ebuild:
-  arm stable, bug #406931
+  17 May 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20160616.ebuild:
+  new snapshot
 
-  08 Mar 2012; Markos Chandras <hwoarang@gentoo.org>
-  linux-firmware-20120125.ebuild:
-  Stable on amd64 wrt bug #406931
+  Package-Manager: portage-2.2.28
 
-  29 Feb 2012; Alexandre Rostovtsev <tetromino@gentoo.org>
-  linux-firmware-20110731.ebuild, linux-firmware-20110818.ebuild,
-  linux-firmware-20120125.ebuild, linux-firmware-20120219.ebuild,
-  linux-firmware-99999999.ebuild:
-  File collisions with rt2860-firmware and rt2870-firmware, thanks to
-  Chí-Thanh Christopher Nguyễn for noticing.
+  01 Jun 2016; Tobias Klausmann <klausman@gentoo.org>
+  linux-firmware-20160331.ebuild:
+  20160331-r0: add alpha keyword
 
-*linux-firmware-20120219 (21 Feb 2012)
+  Gentoo-Bug: 584484
 
-  21 Feb 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20120219.ebuild:
-  New snapshot.
+  Package-Manager: portage-2.3.0_rc1
 
-*linux-firmware-20120125 (03 Feb 2012)
+  08 Jun 2016; Markus Meier <maekke@gentoo.org>
+  linux-firmware-20160331.ebuild:
+  arm stable, bug #584484
 
-  03 Feb 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20110731.ebuild, linux-firmware-20110818.ebuild,
-  +linux-firmware-20120125.ebuild, linux-firmware-99999999.ebuild:
-  New snapshot. Update download locations. Avoid installing empty directories,
-  bug #396073.
+  Package-Manager: portage-2.3.0_rc1
+  RepoMan-Options: --include-arches="arm"
 
-  02 Feb 2012; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-99999999.ebuild:
-  Update location of upstream repository.
+  10 Jun 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20160331.ebuild:
+  amd64 stable wrt bug #584484
 
-  01 Nov 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  -linux-firmware-20110604.ebuild, -linux-firmware-20110709.ebuild,
-  linux-firmware-20110731.ebuild, linux-firmware-20110818.ebuild,
-  linux-firmware-99999999.ebuild:
-  Add net-wireless/ar9271-firmware to blockers, remove old.
+  Package-Manager: portage-2.2.28
+  RepoMan-Options: --include-arches="amd64"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-  28 Aug 2011; Markus Meier <maekke@gentoo.org> linux-firmware-20110731.ebuild:
-  arm stable, bug #379997
+  25 Jun 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20160331.ebuild:
+  x86 stable wrt bug #584484
 
-  24 Aug 2011; Markus Meier <maekke@gentoo.org> linux-firmware-20110731.ebuild:
-  x86 stable, bug #379997
+  Package-Manager: portage-2.2.28
+  RepoMan-Options: --include-arches="x86"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-  24 Aug 2011; Tony Vroon <chainsaw@gentoo.org> linux-firmware-20110731.ebuild:
-  Marked stable on AMD64 based on arch testing by Ian "idella4" Delaney in bug
-  #379997 filed by Chí-Thanh Christopher Nguyễn.
+*linux-firmware-20160628 (28 Jun 2016)
 
-  23 Aug 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20110731.ebuild, linux-firmware-20110818.ebuild,
-  linux-firmware-99999999.ebuild:
-  Add iwl6030-ucode to blockers.
+  28 Jun 2016; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
+  +linux-firmware-20160628.ebuild:
+  add 20160628 snapshot
 
-*linux-firmware-20110818 (20 Aug 2011)
+  Package-Manager: portage-2.2.28
 
-  20 Aug 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20110604.ebuild, linux-firmware-20110709.ebuild,
-  linux-firmware-20110731.ebuild, +linux-firmware-20110818.ebuild,
-  linux-firmware-99999999.ebuild:
-  New snapshot.
+  06 Jul 2016; Agostino Sarubbo <ago@gentoo.org>
+  linux-firmware-20160331.ebuild:
+  ppc stable wrt bug #584484
 
-  08 Aug 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  -linux-firmware-20110429.ebuild, -linux-firmware-20110601.ebuild:
-  Remove old.
+  Package-Manager: portage-2.2.28
+  RepoMan-Options: --include-arches="ppc"
+  Signed-off-by: Agostino Sarubbo <ago@gentoo.org>
 
-  07 Aug 2011; Markus Meier <maekke@gentoo.org> linux-firmware-20110604.ebuild:
-  arm stable, bug #375753
+  19 Aug 2016; Pacho Ramos <pacho@gentoo.org> metadata.xml:
+  Cleanup due to bug #42273
 
-*linux-firmware-20110731 (03 Aug 2011)
+  Package-Manager: portage-2.3.0
 
-  03 Aug 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20110731.ebuild:
-  New snapshot.
+  01 Oct 2016; Pacho Ramos <pacho@gentoo.org> -linux-firmware-20151207.ebuild,
+  -linux-firmware-20160223.ebuild, -linux-firmware-20160331.ebuild,
+  -linux-firmware-20160616.ebuild, -linux-firmware-20160628.ebuild,
+  -linux-firmware-99999999.ebuild, -metadata.xml:
+  package.mask: remove some masked for removal packages
 
-  01 Aug 2011; Markus Meier <maekke@gentoo.org> linux-firmware-20110604.ebuild:
-  x86 stable, bug #375753
+*linux-firmware-99999999 (01 Oct 2016)
+*linux-firmware-20160628 (01 Oct 2016)
+*linux-firmware-20160616 (01 Oct 2016)
+*linux-firmware-20160331 (01 Oct 2016)
+*linux-firmware-20160223 (01 Oct 2016)
+*linux-firmware-20151207 (01 Oct 2016)
 
-  21 Jul 2011; Markos Chandras <hwoarang@gentoo.org>
-  linux-firmware-20110604.ebuild:
-  Stable on amd64 wrt bug #375753
+  01 Oct 2016; Lars Wendler <polynomial-c@gentoo.org>
+  +linux-firmware-20151207.ebuild, +linux-firmware-20160223.ebuild,
+  +linux-firmware-20160331.ebuild, +linux-firmware-20160616.ebuild,
+  +linux-firmware-20160628.ebuild, +linux-firmware-99999999.ebuild,
+  +metadata.xml:
+  Re-added linux-firmware package (bug #595768).
 
-*linux-firmware-20110709 (20 Jul 2011)
+  Was mistakenly removed.
 
-  20 Jul 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20110604.ebuild, +linux-firmware-20110709.ebuild,
-  linux-firmware-99999999.ebuild:
-  New snapshot. Add iwl6005-ucode to blockers.
+  Package-Manager: portage-2.3.1
+  RepoMan-Options: --force
+  Signed-off-by: Lars Wendler <polynomial-c@gentoo.org>
 
-  15 Jun 2011; Diego E. Pettenò <flameeyes@gentoo.org>
-  linux-firmware-20110604.ebuild, linux-firmware-99999999.ebuild:
-  Block ueagle-atm and ueagle4-atm.
+  01 Oct 2016; Jeroen Roovers <jer@gentoo.org> linux-firmware-20160331.ebuild:
+  Stable for HPPA PPC64 (bug #584484).
 
-*linux-firmware-20110604 (05 Jun 2011)
+  Package-Manager: portage-2.3.1
+  RepoMan-Options: --ignore-arches
 
-  05 Jun 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20110604.ebuild:
-  New snapshot.
-
-*linux-firmware-20110601 (02 Jun 2011)
-
-  02 Jun 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  -linux-firmware-20090421.ebuild, -linux-firmware-20100930.ebuild,
-  -linux-firmware-20110128.ebuild, -linux-firmware-20110311.ebuild,
-  +linux-firmware-20110601.ebuild, linux-firmware-99999999.ebuild,
-  metadata.xml:
-  New snapshot. Update live ebuild to git-2.eclass, allow individual selection
-  of firmware files through savedconfig. Remove old.
-
-  31 May 2011; Pawel Hajdan jr <phajdan.jr@gentoo.org>
-  linux-firmware-20110429.ebuild:
-  x86 stable wrt bug #368101
-
-  28 May 2011; Raúl Porcel <armin76@gentoo.org>
-  linux-firmware-20110429.ebuild:
-  arm stable
-
-  24 May 2011; Markos Chandras <hwoarang@gentoo.org>
-  linux-firmware-20110429.ebuild:
-  Stable on amd64 wrt bug #368101
-
-*linux-firmware-20110429 (02 May 2011)
-
-  02 May 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20110429.ebuild:
-  New snapshot.
-
-  09 Apr 2011; Raúl Porcel <armin76@gentoo.org>
-  linux-firmware-20110311.ebuild:
-  Add ~arm
-
-*linux-firmware-20110311 (04 Apr 2011)
-
-  04 Apr 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20110311.ebuild, metadata.xml:
-  New snapshot, add myself to maintainers.
-
-  15 Mar 2011; Diego E. Pettenò <flameeyes@gentoo.org>
-  linux-firmware-20110128.ebuild, linux-firmware-99999999.ebuild:
-  Another blocker.
-
-  07 Mar 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  linux-firmware-20110128.ebuild, linux-firmware-99999999.ebuild:
-  Set DESCRIPTION later so that the eclass will not override it.
-
-*linux-firmware-20110128 (19 Feb 2011)
-
-  19 Feb 2011; Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org>
-  +linux-firmware-20110128.ebuild, linux-firmware-99999999.ebuild:
-  New snapshot. Add more blockers, bug #274343. Unify live and snaphot
-  ebuilds.
-
-*linux-firmware-20100930 (20 Oct 2010)
-
-  20 Oct 2010; Tomáš Chvátal <scarabeus@gentoo.org>
-  +linux-firmware-20100930.ebuild:
-  Version bump (needed for my wifi).
-
-  07 May 2010; Robin H. Johnson <robbat2@gentoo.org>
-  linux-firmware-20090421.ebuild, linux-firmware-99999999.ebuild:
-  Apply at least some of the licenses from WHENCE that we already have in
-  the tree.
-
-  07 May 2010; Robin H. Johnson <robbat2@gentoo.org>
-  linux-firmware-20090421.ebuild, linux-firmware-99999999.ebuild:
-  Update LICENSE to include freedist just like the kernel sources.
-
-  12 Dec 2009; Diego E. Pettenò <flameeyes@gentoo.org>
-  linux-firmware-99999999.ebuild:
-  Remove keywords from live ebuild.
-
-*linux-firmware-99999999 (02 Dec 2009)
-
-  02 Dec 2009; Greg Kroah-Hartman <gregkh@gentoo.org>
-  +linux-firmware-99999999.ebuild:
-  live ebuild added thanks to Rick Farina
-
-*linux-firmware-20090421 (21 Apr 2009)
-
-  21 Apr 2009; Greg Kroah-Hartman <gregkh@gentoo.org> +metadata.xml,
-  +linux-firmware-20090421.ebuild:
-  Initial creation of the linux-firmware tree
