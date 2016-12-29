@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-kernel/linux-firmware/linux-firmware-20130711.ebuild,v 1.1 2013/07/17 02:25:53 zerochaos Exp $
+# $Id$
 
 EAPI=5
 inherit savedconfig
@@ -11,12 +11,12 @@ if [[ ${PV} == 99999999* ]]; then
 	EGIT_REPO_URI="git://git.kernel.org/pub/scm/linux/kernel/git/firmware/${PN}.git"
 	KEYWORDS=""
 else
-	SRC_URI="https://dev.gentoo.org/~zerochaos/distfiles/${P}.tar.xz"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~x86"
+	SRC_URI="mirror://gentoo/${P}.tar.xz"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 fi
 
 DESCRIPTION="Linux firmware files"
-HOMEPAGE="http://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git"
+HOMEPAGE="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git"
 
 LICENSE="GPL-1 GPL-2 GPL-3 BSD freedist"
 SLOT="0"
@@ -56,7 +56,11 @@ RDEPEND="!savedconfig? (
 		!sys-firmware/iwl6005-ucode
 		!sys-firmware/iwl6030-ucode
 		!sys-firmware/iwl6050-ucode
-		!x11-drivers/radeon-ucode
+		!sys-firmware/iwl3160-ucode
+		!sys-firmware/iwl7260-ucode
+		!sys-firmware/iwl7265-ucode
+		!sys-firmware/iwl3160-7260-bt-ucode
+		!sys-firmware/radeon-ucode
 	)"
 #add anything else that collides to this
 
@@ -66,7 +70,7 @@ src_unpack() {
 	else
 		default
 		# rename directory from git snapshot tarball
-		#mv ${PN}-*/ ${P} || die #am I the only one that makes these manually?
+		mv ${PN}-*/ ${P} || die
 	fi
 }
 
@@ -87,7 +91,9 @@ src_prepare() {
 }
 
 src_install() {
-	save_config ${PN}.conf
+	if use !savedconfig; then
+		save_config ${PN}.conf
+	fi
 	rm ${PN}.conf || die
 	insinto /lib/firmware/
 	doins -r *
