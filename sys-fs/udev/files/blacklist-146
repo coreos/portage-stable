@@ -8,6 +8,12 @@
 # evbug is a debug tool and should be loaded explicitly
 blacklist evbug
 
+# EDAC is software memory error correction. Causes issues for some older hardware.
+blacklist i5000_edac
+blacklist edac_core
+blacklist i3200_edac
+
+
 # Autoloading eth1394 most of the time re-orders your network
 # interfaces, and with buggy kernel 2.6.21, udev persistent-net
 # is not able to rename these devices, so you get eth?_rename devices
