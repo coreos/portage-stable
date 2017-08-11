@@ -16,7 +16,7 @@ PYTHON_COMPAT=( python2_7 )
 # 9999-r2: next
 # 9999-r3: pu
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
-EGIT_BRANCH=next
+EGIT_BRANCH=maint
 PLOCALES="bg ca de fr is it ko pt_PT ru sv vi zh_CN"
 
 inherit toolchain-funcs eutils elisp-common l10n perl-module bash-completion-r1 python-single-r1 systemd ${SCM}
@@ -38,12 +38,12 @@ if [[ ${PV} != *9999 ]]; then
 			${SRC_URI_KORG}/${PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			)"
 	[[ "${PV}" = *_rc* ]] || \
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+	KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+blksha1 +curl cgi doc emacs gnome-keyring +gpg highlight +iconv libressl mediawiki mediawiki-experimental +nls +pcre +pcre-jit +perl +python ppcsha1 tk +threads +webdav xinetd cvs subversion test"
+IUSE="+blksha1 +curl cgi doc emacs gnome-keyring +gpg highlight +iconv libressl mediawiki mediawiki-experimental +nls +pcre +perl +python ppcsha1 tk +threads +webdav xinetd cvs subversion test"
 
 # Common to both DEPEND and RDEPEND
 CDEPEND="
@@ -51,10 +51,7 @@ CDEPEND="
 	!libressl? ( dev-libs/openssl:0= )
 	libressl? ( dev-libs/libressl:= )
 	sys-libs/zlib
-	pcre? (
-		pcre-jit? ( dev-libs/libpcre2[jit(+)] )
-		!pcre-jit? ( dev-libs/libpcre )
-	)
+	pcre? ( dev-libs/libpcre )
 	perl? ( dev-lang/perl:=[-build(-)] )
 	tk? ( dev-lang/tk:0= )
 	curl? (
@@ -111,7 +108,6 @@ REQUIRED_USE="
 	mediawiki-experimental? ( mediawiki )
 	subversion? ( perl )
 	webdav? ( curl )
-	pcre-jit? ( pcre )
 	python? ( ${PYTHON_REQUIRED_USE} )
 "
 
@@ -177,16 +173,9 @@ exportmakeopts() {
 		|| myopts+=" NO_GETTEXT=YesPlease"
 	use tk \
 		|| myopts+=" NO_TCLTK=YesPlease"
-	if use pcre; then
-		if use pcre-jit; then
-			myopts+=" USE_LIBPCRE2=YesPlease"
-			extlibs+=" -lpcre2-8"
-		else
-			myopts+=" USE_LIBPCRE1=YesPlease"
-			myopts+=" NO_LIBPCRE1_JIT=YesPlease"
-			extlibs+=" -lpcre"
-		fi
-	fi
+	use pcre \
+		&& myopts+=" USE_LIBPCRE=yes" \
+		&& extlibs+=" -lpcre"
 	use perl \
 		&& myopts+=" INSTALLDIRS=vendor" \
 		|| myopts+=" NO_PERL=YesPlease"
@@ -379,9 +368,6 @@ src_compile() {
 	git_emake
 	use doc && git_emake doc
 
-	cd "${S}"/contrib/diff-highlight || die
-	git_emake
-
 	if use mediawiki ; then
 		cd "${S}"/contrib/mw-to-git
 		git_emake
@@ -567,7 +553,7 @@ src_install() {
 }
 
 src_test() {
-	local disabled="t9128-git-svn-cmd-branch.sh"
+	local disabled=""
 	local tests_cvs="t9200-git-cvsexportcommit.sh \
 					t9400-git-cvsserver-server.sh \
 					t9401-git-cvsserver-crlf.sh \
