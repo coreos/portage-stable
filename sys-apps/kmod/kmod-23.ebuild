@@ -1,18 +1,18 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 
-inherit bash-completion-r1 ltprune multilib python-r1
+inherit bash-completion-r1 eutils multilib python-r1
 
 if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="git://git.kernel.org/pub/scm/utils/kernel/${PN}/${PN}.git"
-	inherit autotools git-r3
+	inherit autotools git-2
 else
 	SRC_URI="mirror://kernel/linux/utils/kernel/kmod/${P}.tar.xz"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+	KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86"
 	inherit libtool
 fi
 
@@ -55,8 +55,6 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 DOCS="NEWS README TODO"
 
 src_prepare() {
-	default
-
 	if [ ! -e configure ]; then
 		if use doc; then
 			gtkdocize --copy --docdir libkmod/docs || die
@@ -77,15 +75,15 @@ src_prepare() {
 src_configure() {
 	local myeconfargs=(
 		--bindir="${EPREFIX}/bin"
-		--enable-shared
-		--with-bashcompletiondir="$(get_bashcompdir)"
 		--with-rootlibdir="${EPREFIX}/$(get_libdir)"
-		$(use_enable debug)
-		$(use_enable doc gtk-doc)
+		--enable-shared
 		$(use_enable static-libs static)
 		$(use_enable tools)
+		$(use_enable debug)
+		$(use_enable doc gtk-doc)
 		$(use_with lzma xz)
 		$(use_with zlib)
+		--with-bashcompletiondir="$(get_bashcompdir)"
 	)
 
 	local ECONF_SOURCE="${S}"
