@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: kernel-2.eclass
@@ -146,7 +146,7 @@
 # @DESCRIPTION:
 # This kernel was already deblobbed elsewhere.
 # If false, either optional deblobbing will be available
-# or the license will note the inclusion of freedist code.
+# or the license will note the inclusion of linux-firmware code.
 
 # @ECLASS-VARIABLE:  K_LONGTERM
 # @DEFAULT_UNSET
@@ -337,8 +337,8 @@ detect_version() {
 		KV_MINOR=$(get_version_component_range 2 ${OKV})
 		KV_PATCH=$(get_version_component_range 3 ${OKV})
 		if [[ ${KV_MAJOR}${KV_MINOR}${KV_PATCH} -ge 269 ]]; then
-	        KV_EXTRA=$(get_version_component_range 4- ${OKV})
-	        KV_EXTRA=${KV_EXTRA/[-_]*}
+			KV_EXTRA=$(get_version_component_range 4- ${OKV})
+			KV_EXTRA=${KV_EXTRA/[-_]*}
 		else
 			KV_PATCH=$(get_version_component_range 3- ${OKV})
 		fi
@@ -606,6 +606,7 @@ if [[ ${ETYPE} == sources ]]; then
 		sys-devel/make
 		dev-lang/perl
 		sys-devel/bc
+		virtual/libelf
 	)"
 
 	SLOT="${PVR}"
@@ -624,7 +625,7 @@ if [[ ${ETYPE} == sources ]]; then
 
 			# Reflect that kernels contain firmware blobs unless otherwise
 			# stripped
-			LICENSE="${LICENSE} !deblob? ( freedist )"
+			LICENSE="${LICENSE} !deblob? ( linux-firmware )"
 
 			DEPEND+=" deblob? ( ${PYTHON_DEPS} )"
 
@@ -661,13 +662,13 @@ if [[ ${ETYPE} == sources ]]; then
 		else
 			# We have no way to deblob older kernels, so just mark them as
 			# tainted with non-libre materials.
-			LICENSE="${LICENSE} freedist"
+			LICENSE="${LICENSE} linux-firmware"
 		fi
 	fi
 
 elif [[ ${ETYPE} == headers ]]; then
 	DESCRIPTION="Linux system headers"
-	IUSE="crosscompile_opts_headers-only"
+	IUSE="headers-only"
 
 	# Since we should NOT honour KBUILD_OUTPUT in headers
 	# lets unset it here.
@@ -693,7 +694,7 @@ kernel_header_destdir() {
 # @DESCRIPTION:
 # set use if necessary for cross compile support
 cross_pre_c_headers() {
-	use crosscompile_opts_headers-only && [[ ${CHOST} != ${CTARGET} ]]
+	use headers-only && [[ ${CHOST} != ${CTARGET} ]]
 }
 
 # @FUNCTION: env_setup_xmakeopts
@@ -748,7 +749,6 @@ unpack_2_6() {
 		touch .config
 		eerror "make defconfig failed."
 		eerror "assuming you dont have any headers installed yet and continuing"
-		epause 5
 	fi
 
 	make -s include/linux/version.h ${xmakeopts} 2>/dev/null \
@@ -1243,7 +1243,7 @@ unipatch() {
 					UNIPATCH_DROP+=" 5000_enable-additional-cpu-optimizations-for-gcc.patch"
 				fi
 			fi
- 		fi
+		fi
 	done
 
 	#populate KPATCH_DIRS so we know where to look to remove the excludes
@@ -1606,7 +1606,6 @@ kernel-2_pkg_setup() {
 			ewarn "Also be aware that bugreports about gcc-4 not working"
 			ewarn "with linux-2.4 based ebuilds will be closed as INVALID!"
 			echo
-			epause 10
 		fi
 	fi
 

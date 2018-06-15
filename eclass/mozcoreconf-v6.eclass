@@ -87,7 +87,7 @@ moz_pkgsetup() {
 	# Ensure we use correct toolchain
 	export HOST_CC="$(tc-getBUILD_CC)"
 	export HOST_CXX="$(tc-getBUILD_CXX)"
-	tc-export CC CXX LD PKG_CONFIG
+	tc-export CC CXX LD PKG_CONFIG AR RANLIB
 
 	# Ensure that we have a sane build enviroment
 	export MOZILLA_CLIENT=1
@@ -161,7 +161,9 @@ mozconfig_init() {
 	elif [[ ${ARCH} == hppa ]]; then
 		mozconfig_annotate "more than -O0 causes a segfault on hppa" --enable-optimize=-O0
 	elif [[ ${ARCH} == x86 ]]; then
-		mozconfig_annotate "less then -O2 causes a segfault on x86" --enable-optimize=-O2
+		mozconfig_annotate "less than -O2 causes a segfault on x86" --enable-optimize=-O2
+	elif [[ ${ARCH} == arm ]] && [[ $(gcc-major-version) -ge 6 ]]; then
+		mozconfig_annotate "less than -O2 causes a breakage on arm with gcc-6" --enable-optimize=-O2
 	elif use custom-optimization || [[ ${ARCH} =~ (alpha|ia64) ]]; then
 		# Set optimization level based on CFLAGS
 		if is-flag -O0; then
@@ -215,13 +217,11 @@ mozconfig_init() {
 
 	# We need to append flags for gcc-6 support
 	if [[ $(gcc-major-version) -ge 6 ]]; then
-		append-cxxflags -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2
+		append-cxxflags -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns -fno-schedule-insns2
 	fi
 
 	# Use the MOZILLA_FIVE_HOME for the rpath
 	append-ldflags -Wl,-rpath="${MOZILLA_FIVE_HOME}",--enable-new-dtags
-	# Set MOZILLA_FIVE_HOME in mozconfig
-	mozconfig_annotate '' --with-default-mozilla-five-home=${MOZILLA_FIVE_HOME}
 
 	####################################
 	#
