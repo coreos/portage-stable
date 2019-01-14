@@ -33,6 +33,7 @@ CONFIG_CHECK="~KEXEC"
 PATCHES=(
 	"${FILESDIR}"/${PN}-2.0.4-disable-kexec-test.patch
 	"${FILESDIR}"/${PN}-2.0.4-out-of-source.patch
+	"${FILESDIR}"/${PN}-no-mcmodel.patch
 )
 
 pkg_setup() {

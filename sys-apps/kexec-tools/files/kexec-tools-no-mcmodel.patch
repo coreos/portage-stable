@@ -1,0 +1,8 @@
+--- a/purgatory/arch/x86_64/Makefile.orig	2018-11-21 20:47:21.974794118 +0100
++++ b/purgatory/arch/x86_64/Makefile	2018-11-21 20:47:29.210771604 +0100
+@@ -23,4 +23,4 @@
+ x86_64_PURGATORY_SRCS += purgatory/arch/i386/vga.c
+ x86_64_PURGATORY_SRCS += purgatory/arch/i386/pic.c
+ 
+-x86_64_PURGATORY_EXTRA_CFLAGS = -mcmodel=large
++x86_64_PURGATORY_EXTRA_CFLAGS =
