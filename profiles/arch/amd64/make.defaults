@@ -5,7 +5,7 @@ ARCH="amd64"
 ACCEPT_KEYWORDS="${ARCH}"
 
 CHOST="x86_64-pc-linux-gnu"
-CFLAGS="-O2 -pipe"
+CFLAGS="-O2 -pipe -mindirect-branch=thunk -mindirect-branch-register"
 CXXFLAGS="${CFLAGS}"
 FFLAGS="${CFLAGS}"
 FCFLAGS="${CFLAGS}"
