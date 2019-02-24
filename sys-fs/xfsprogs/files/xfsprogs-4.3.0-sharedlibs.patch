@@ -1,5 +1,5 @@
---- xfsprogs-4.15.0/include/buildmacros
-+++ xfsprogs-4.15.0/include/buildmacros
+--- xfsprogs-4.3.0/include/buildmacros
++++ xfsprogs-4.3.0/include/buildmacros
 @@ -70,18 +70,9 @@
  # /usr/lib.
  ifeq ($(ENABLE_SHARED),yes)
@@ -22,18 +22,9 @@
  else
  INSTALL_LTLIB_DEV = $(INSTALL_LTLIB_STATIC)
  endif
---- xfsprogs-4.15.0/libfrog/Makefile
-+++ xfsprogs-4.15.0/libfrog/Makefile
-@@ -5,6 +5,8 @@
- TOPDIR = ..
- include $(TOPDIR)/include/builddefs
- 
-+LTLIBS = $(LIBXFS) $(LIBBLKID)
-+
- LTLIBRARY = libfrog.la
- LT_CURRENT = 0
- LT_REVISION = 0
-@@ -34,6 +36,9 @@
+--- xfsprogs-4.3.0/libxcmd/Makefile
++++ xfsprogs-4.3.0/libxcmd/Makefile
+@@ -34,6 +34,9 @@
  
  include $(BUILDRULES)
  
@@ -44,41 +35,9 @@
 +	$(INSTALL_LTLIB_DEV)
  
  -include .ltdep
---- xfsprogs-4.15.0/libhandle/Makefile
-+++ xfsprogs-4.15.0/libhandle/Makefile
-@@ -24,7 +24,6 @@
- include $(BUILDRULES)
- 
- install: default
--	$(INSTALL_LTLIB)
- 
- install-dev: default
- 	$(INSTALL_LTLIB_DEV)
---- xfsprogs-4.15.0/libxcmd/Makefile
-+++ xfsprogs-4.15.0/libxcmd/Makefile
-@@ -12,6 +12,8 @@
- 
- CFILES = command.c input.c help.c quit.c
- 
-+LTLIBS = $(LIBXFS) $(LIBBLKID)
-+
- ifeq ($(ENABLE_READLINE),yes)
- LCFLAGS += -DENABLE_READLINE
- LTLIBS += $(LIBREADLINE) $(LIBTERMCAP)
-@@ -26,6 +28,9 @@
- 
- include $(BUILDRULES)
- 
--install install-dev: default
-+install: default
-+
-+install-dev: default
-+	$(INSTALL_LTLIB_DEV)
- 
- -include .ltdep
---- xfsprogs-4.15.0/libxfs/Makefile
-+++ xfsprogs-4.15.0/libxfs/Makefile
-@@ -151,6 +151,7 @@
+--- xfsprogs-4.3.0/libxfs/Makefile
++++ xfsprogs-4.3.0/libxfs/Makefile
+@@ -138,6 +138,7 @@
  
  install-dev: install
  	$(INSTALL) -m 644 $(PKGHFILES) $(PKG_INC_DIR)
@@ -86,9 +45,18 @@
  
  # We need to install the headers before building the dependencies.  If we
  # include the .ltdep file, the makefile decides that it needs to build the
---- xfsprogs-4.15.0/libxlog/Makefile
-+++ xfsprogs-4.15.0/libxlog/Makefile
-@@ -19,6 +19,9 @@
+--- xfsprogs-4.3.0/libxlog/Makefile
++++ xfsprogs-4.3.0/libxlog/Makefile
+@@ -12,6 +12,8 @@
+ 
+ CFILES = xfs_log_recover.c util.c
+ 
++LTLIBS = $(LIBUUID) $(LIBXFS)
++
+ # don't want to link xfs_repair with a debug libxlog.
+ DEBUG = -DNDEBUG
+ 
+@@ -19,6 +21,9 @@
  
  include $(BUILDRULES)
  
@@ -99,14 +67,12 @@
 +	$(INSTALL_LTLIB_DEV)
  
  -include .ltdep
---- xfsprogs-4.15.0/Makefile
-+++ xfsprogs-4.15.0/Makefile
-@@ -92,6 +92,10 @@
- mkfs: libxcmd
- spaceman: libxcmd
- scrub: libhandle libxcmd
-+libfrog: libxfs
-+libfrog-install-dev: libxfs-install-dev
+--- xfsprogs-4.3.0/Makefile
++++ xfsprogs-4.3.0/Makefile
+@@ -82,6 +82,8 @@
+ quota: libxcmd
+ repair: libxlog
+ copy: libxlog
 +libxlog: libxfs
 +libxlog-install-dev: libxfs-install-dev
  
