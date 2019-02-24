@@ -1,15 +1,15 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=5
 
-inherit bash-completion-r1
+inherit bash-completion-r1 eutils multilib toolchain-funcs
 
 libbtrfs_soname=0
 
 if [[ ${PV} != 9999 ]]; then
 	MY_PV=v${PV}
-	KEYWORDS="~alpha amd64 ~arm ~arm64 ~ia64 ~mips ppc ppc64 ~sparc x86"
+	KEYWORDS="~alpha amd64 arm ~arm64 ~ia64 ~mips ppc ppc64 ~sparc x86"
 	SRC_URI="https://www.kernel.org/pub/linux/kernel/people/kdave/${PN}/${PN}-${MY_PV}.tar.xz"
 	S="${WORKDIR}"/${PN}-${MY_PV}
 else
@@ -58,7 +58,7 @@ if [[ ${PV} == 9999 ]]; then
 fi
 
 src_prepare() {
-	default
+	epatch_user
 	if [[ ${PV} == 9999 ]]; then
 		eautoreconf
 		mkdir config || die
@@ -88,6 +88,9 @@ src_install() {
 		$(usex static-libs '' 'libs_static=')
 		$(usex static install-static '')
 	)
+
+	# Bug 572512
+	dodir /sbin
 	emake V=1 DESTDIR="${D}" install "${makeargs[@]}"
 	newbashcomp btrfs-completion btrfs
 }
