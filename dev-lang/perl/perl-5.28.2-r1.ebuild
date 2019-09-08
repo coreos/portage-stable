@@ -1,22 +1,24 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit eutils alternatives flag-o-matic toolchain-funcs multilib multiprocessing
 
-PATCH_VER=1
-CROSS_VER=1.1.9
-PATCH_BASE="perl-5.26.2-patches-${PATCH_VER}"
+PATCH_VER=4
+CROSS_VER=1.2.3
+PATCH_BASE="perl-5.28.2-patches-${PATCH_VER}"
+PATCH_DEV=dilfridge
 
 DIST_AUTHOR=SHAY
 
 # Greatest first, don't include yourself
 # Devel point-releases are not ABI-intercompatible, but stable point releases are
 # BIN_OLDVERSEN is contains only C-ABI-intercompatible versions
-PERL_BIN_OLDVERSEN="5.26.1 5.26.0"
+PERL_BIN_OLDVERSEN="5.28.0"
+
 if [[ "${PV##*.}" == "9999" ]]; then
-	DIST_VERSION=5.26.2
+	DIST_VERSION=5.28.0
 else
 	DIST_VERSION="${PV/_rc/-RC}"
 fi
@@ -40,7 +42,7 @@ SRC_URI="
 	mirror://cpan/authors/id/${DIST_AUTHOR:0:1}/${DIST_AUTHOR:0:2}/${DIST_AUTHOR}/${MY_P}.tar.xz
 	https://github.com/gentoo-perl/perl-patchset/releases/download/${PATCH_BASE}/${PATCH_BASE}.tar.xz
 	mirror://gentoo/${PATCH_BASE}.tar.xz
-	https://dev.gentoo.org/~kentnl/distfiles/${PATCH_BASE}.tar.xz
+	https://dev.gentoo.org/~${PATCH_DEV}/distfiles/${PATCH_BASE}.tar.xz
 	https://github.com/arsv/perl-cross/releases/download/${CROSS_VER}/perl-cross-${CROSS_VER}.tar.gz
 "
 HOMEPAGE="https://www.perl.org/"
@@ -49,7 +51,7 @@ LICENSE="|| ( Artistic GPL-1+ )"
 SLOT="0/${SUBSLOT}"
 
 if [[ "${PV##*.}" != "9999" ]]; then
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm arm64 ~hppa ia64 m68k ~mips ppc ppc64 ~riscv s390 sh ~sparc x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 IUSE="berkdb debug doc gdbm ithreads"
@@ -75,20 +77,20 @@ PDEPEND="
 S="${WORKDIR}/${MY_P}"
 
 dual_scripts() {
-	src_remove_dual      perl-core/Archive-Tar        2.240.0       ptar ptardiff ptargrep
-	src_remove_dual      perl-core/CPAN               2.180.0       cpan
-	src_remove_dual      perl-core/Digest-SHA         5.960.0       shasum
-	src_remove_dual      perl-core/Encode             2.880.0       enc2xs piconv
-	src_remove_dual      perl-core/ExtUtils-MakeMaker 7.240.0       instmodsh
-	src_remove_dual      perl-core/ExtUtils-ParseXS   3.340.0       xsubpp
+	src_remove_dual      perl-core/Archive-Tar        2.300.0       ptar ptardiff ptargrep
+	src_remove_dual      perl-core/CPAN               2.200.0       cpan
+	src_remove_dual      perl-core/Digest-SHA         6.10.0        shasum
+	src_remove_dual      perl-core/Encode             2.970.0       enc2xs piconv
+	src_remove_dual      perl-core/ExtUtils-MakeMaker 7.340.0       instmodsh
+	src_remove_dual      perl-core/ExtUtils-ParseXS   3.390.0       xsubpp
 	src_remove_dual      perl-core/IO-Compress        2.74.0        zipdetails
-	src_remove_dual      perl-core/JSON-PP            2.274.0.200_rc   json_pp
-	src_remove_dual      perl-core/Module-CoreList    5.201.804.142.600_rc corelist
+	src_remove_dual      perl-core/JSON-PP            2.970.10      json_pp
+	src_remove_dual      perl-core/Module-CoreList    5.201.904.190 corelist
 	src_remove_dual      perl-core/Pod-Parser         1.630.0       pod2usage podchecker podselect
-	src_remove_dual      perl-core/Pod-Perldoc        3.280.0       perldoc
-	src_remove_dual      perl-core/Test-Harness       3.380.0       prove
-	src_remove_dual      perl-core/podlators          4.90.0        pod2man pod2text
-	src_remove_dual_man  perl-core/podlators          4.90.0        /usr/share/man/man1/perlpodstyle.1
+	src_remove_dual      perl-core/Pod-Perldoc        3.280.100     perldoc
+	src_remove_dual      perl-core/Test-Harness       3.420.0       prove
+	src_remove_dual      perl-core/podlators          4.100.0       pod2man pod2text
+	src_remove_dual_man  perl-core/podlators          4.100.0       /usr/share/man/man1/perlpodstyle.1
 }
 
 check_rebuild() {
@@ -136,6 +138,7 @@ pkg_setup() {
 		*-netbsd*)    osname="netbsd" ;;
 		*-openbsd*)   osname="openbsd" ;;
 		*-darwin*)    osname="darwin" ;;
+		*-solaris*)   osname="solaris" ;;
 		*-interix*)   osname="interix" ;;
 		*-aix*)       osname="aix" ;;
 		*-cygwin*)    osname="cygwin" ;;
@@ -285,15 +288,6 @@ echo "${patchoutput}" >> "${S}/MANIFEST"
 src_prepare_perlcross() {
 	cp -a ../perl-cross-${CROSS_VER}/* . || die
 
-	sed -i \
-		-e 's/MakeMaker\.pm .*/MakeMaker.pm bf9174c70a0e50ff2fee4552c7df89b37d292da1/' \
-		-e 's/MM_Unix\.pm .*/MM_Unix.pm b0ec308fe2d7dcfcef5732880db0fae1f4ea80fa/' \
-		cnf/diffs/perl5-${PV}/customized.patch || die
-
-	sed -i \
-		-e 's|^lib/unicore/CombiningClass.pl pod/perluniprops.pod:|lib/unicore/CombiningClass.pl pod/perluniprops.pod: $(CONFIGPM)|' \
-		Makefile || die
-
 	# bug 604072
 	MAKEOPTS+=" -j1"
 	export MAKEOPTS
@@ -314,7 +308,7 @@ src_prepare() {
 	if [[ ${CHOST} == *-solaris* ]] ; then
 		# do NOT mess with nsl, on Solaris this is always necessary,
 		# when -lsocket is used e.g. to get h_errno
-		sed -i '/gentoo\/no-nsl\.patch/d' "${WORKDIR}/patches/series" || die "Can't exclude libnsl patch"
+		sed -i '/gentoo\/no-nsl-cl\.patch/d' "${WORKDIR}/patches/series" || die
 	fi
 
 	einfo "Applying patches from ${PATCH_BASE} ..."
@@ -337,6 +331,11 @@ src_prepare() {
 	# Use errno.h from prefix rather than from host system, bug #645804
 	if use prefix && [[ -e "${EPREFIX}"/usr/include/errno.h ]] ; then
 		sed -i "/my..sysroot/s:'':'${EPREFIX}':" ext/Errno/Errno_pm.PL || die
+	fi
+
+	if [[ ${CHOST} == *-solaris* ]] ; then
+		# set a soname, fix linking against just built libperl
+		sed -i -e 's/netbsd\*/netbsd*|solaris*/' Makefile.SH || die
 	fi
 
 	default
@@ -373,6 +372,9 @@ src_configure() {
 
 	# Fixes bug #143895 on gcc-4.1.1
 	filter-flags "-fsched2-use-superblocks"
+
+	# Generic LTO broken since 5.28, triggers EUMM failures
+	filter-flags "-flto"
 
 	use sparc && myconf -Ud_longdbl
 
@@ -463,6 +465,10 @@ src_configure() {
 	# using c89 mode as injected by cflags.SH
 	[[ ${CHOST} == *-darwin* && ${CHOST##*darwin} -le 9 ]] && tc-is-gcc && \
 		append-cflags -Dinline=__inline__
+
+	# fix unaligned access misdetection
+	# https://rt.perl.org/Public/Bug/Display.html?id=133495
+	[[ ${CHOST} == sparc*-solaris* ]] && myconf "-Dd_u32align='define'"
 
 	# Prefix: the host system needs not to follow Gentoo multilib stuff, and in
 	# Prefix itself we don't do multilib either, so make sure perl can find
@@ -558,6 +564,8 @@ src_configure() {
 
 src_test() {
 	export NO_GENTOO_NETWORK_TESTS=1;
+	export GENTOO_ASSUME_SANDBOXED="${GENTOO_ASSUME_SANDBOXED:-1}"
+	export GENTOO_NO_PORTING_TESTS="${GENTOO_NO_PORTING_TESTS:-1}"
 	if [[ ${EUID} == 0 ]] ; then
 		ewarn "Test fails with a sandbox error (#328793) if run as root. Skipping tests..."
 		return 0
@@ -580,9 +588,10 @@ src_install() {
 		rm -f "${ED}"${coredir}/${LIBPERL}
 		ln -sf ${LIBPERL} "${ED}"/usr/$(get_libdir)/libperl$(get_libname ${SHORT_PV}) || die
 		ln -sf ${LIBPERL} "${ED}"/usr/$(get_libdir)/libperl$(get_libname) || die
-		ln -sf ../../../../../$(get_libdir)/${LIBPERL} "${ED}"${coredir}/${LIBPERL} || die
-		ln -sf ../../../../../$(get_libdir)/${LIBPERL} "${ED}"${coredir}/libperl$(get_libname ${SHORT_PV}) || die
-		ln -sf ../../../../../$(get_libdir)/${LIBPERL} "${ED}"${coredir}/libperl$(get_libname) || die
+
+		ln -sf ../../../../${LIBPERL} "${ED}"${coredir}/${LIBPERL} || die
+		ln -sf ../../../../${LIBPERL} "${ED}"${coredir}/libperl$(get_libname ${SHORT_PV}) || die
+		ln -sf ../../../../${LIBPERL} "${ED}"${coredir}/libperl$(get_libname) || die
 	fi
 
 	rm -rf "${ED}"/usr/share/man/man3 || die "Unable to remove module man pages"
